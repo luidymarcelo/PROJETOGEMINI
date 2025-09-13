@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const GEMINI_API_KEY = "SUA_CHAVE_AQUI"; // substitua
+const GEMINI_API_KEY = "AIzaSyBhLtsTJdPka52X9E5IJFU8HKTrhwQRY54"; // substitua
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 export async function gerarDocumentacao(prompt, duvida) {
