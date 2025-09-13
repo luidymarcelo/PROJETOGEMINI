@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+    --primary-color: #F77730;
+    --secondary-color: #6c757d;
+    --background-color: #f8f9fa;
+    --card-background: #fff;
+    --border-color: #e9ecef;
+    --text-color: #343a40;
+    --pre-background: #f1f3f5;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.search-container {
+    display: flex;
+    flex-direction: column; /* Altera para empilhar os elementos */
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+#relatorio, #duvida {
+    flex-grow: 1;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: border-color 0.3s;
+    width: 100%; /* Ocupa 100% da largura do contêiner */
+    resize: vertical; /* Permite redimensionar verticalmente */
+}
+
+#duvida {
+    min-height: 100px;
+}
+
+#relatorio:focus, #duvida:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+button:hover {
+    background-color: #92b300;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+.result-container {
+    background-color: var(--card-background);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    display: none;
+}
+
+#status {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--secondary-color);
+}
+
+h2 {
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+}
+
+pre {
+    background-color: var(--pre-background);
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
