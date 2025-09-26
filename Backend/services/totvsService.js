@@ -101,18 +101,21 @@ export async function buscarViewTotvs(relatorio) {
     },
     data: {
       sql: `SELECT  
-                RTRIM(A.REFERENCED_NAME) AS TABELA, 
-                RTRIM(B.X2_NOME) AS NOME_TABELA,
-                RTRIM(C.X3_CAMPO) AS CAMPO,
-                RTRIM(C.X3_TITULO) AS TITULO,
-                RTRIM(C.X3_DESCRIC) AS DESCRICAO
-            FROM ALL_DEPENDENCIES A
-            LEFT JOIN SX2010 B
-                ON UPPER(RTRIM(A.REFERENCED_NAME)) = UPPER(RTRIM(B.X2_ARQUIVO))
-            LEFT JOIN SX3010 C
-                ON UPPER(RTRIM(B.X2_CHAVE)) = UPPER(RTRIM(C.X3_ARQUIVO))
-            WHERE A.NAME = '${viewName}'
-              AND A.TYPE = 'VIEW'`
+            RTRIM(A.REFERENCED_NAME) AS TABELA, 
+            CASE
+                WHEN RTRIM(A.REFERENCED_NAME) = 'EIS_DIMENSAO_DAT'
+                THEN 'Dimensão das datas'
+                ELSE RTRIM(B.X2_NOME)
+            END AS NOME_TABELA
+                FROM ALL_DEPENDENCIES A
+                LEFT JOIN SX2010 B
+                    ON UPPER(RTRIM(A.REFERENCED_NAME)) = UPPER(RTRIM(B.X2_ARQUIVO))
+                LEFT JOIN SX3010 C
+                    ON UPPER(RTRIM(B.X2_CHAVE)) = UPPER(RTRIM(C.X3_ARQUIVO))
+                WHERE A.NAME = '${viewName}'
+                  AND A.TYPE = 'VIEW'
+                GROUP BY A.REFERENCED_NAME,
+                        B.X2_NOME`
     }
   });
 
@@ -122,7 +125,7 @@ export async function buscarViewTotvs(relatorio) {
   return {
     view: viewName,
     schema,
-    ddl
-    //dependencias
+    ddl,
+    dependencias
   };
 }
