@@ -4,10 +4,10 @@ async function solicitarToken(db) {
   let url, password;
   if (db === "BR") {
     url = 'http://192.168.1.245:8055/rest/api/oauth2/v1/token';
-    password = 'tvsita2026';
+    password = 'tvsita2025';
   } else if (db === "PY") {
     url = 'http://192.168.1.243:9995/rest/api/oauth2/v1/token';
-    password = 'tvsita2023';
+    password = 'tvsita2026';
   } else {
     throw new Error('Banco desconhecido');
   }
@@ -62,7 +62,7 @@ export async function buscarViewTotvs(relatorio) {
 
   const schema = origemdb === "BI_PY" ? "PROTHEUSPY" : "PROTHEUS";
 
-  const response = await axios.get(API_URL, {
+  const ddlResponse = await axios.get(API_URL, {
     headers: {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
@@ -89,7 +89,40 @@ export async function buscarViewTotvs(relatorio) {
     }
   });
 
-  const p = response.data.Retorno[0];
-  return (p.PARTE1||'')+(p.PARTE2||'')+(p.PARTE3||'')+(p.PARTE4||'')+(p.PARTE5||'')+
-         (p.PARTE6||'')+(p.PARTE7||'')+(p.PARTE8||'')+(p.PARTE9||'')+(p.PARTE10||'');
+  const p = ddlResponse.data.Retorno[0];
+  const ddl = (p.PARTE1||'')+(p.PARTE2||'')+(p.PARTE3||'')+(p.PARTE4||'')+(p.PARTE5||'')+
+              (p.PARTE6||'')+(p.PARTE7||'')+(p.PARTE8||'')+(p.PARTE9||'')+(p.PARTE10||'');
+
+  // 3) Busca tabelas e campos relacionados
+  const depsResponse = await axios.get(API_URL, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    data: {
+      sql: `SELECT  
+                RTRIM(A.REFERENCED_NAME) AS TABELA, 
+                RTRIM(B.X2_NOME) AS NOME_TABELA,
+                RTRIM(C.X3_CAMPO) AS CAMPO,
+                RTRIM(C.X3_TITULO) AS TITULO,
+                RTRIM(C.X3_DESCRIC) AS DESCRICAO
+            FROM ALL_DEPENDENCIES A
+            LEFT JOIN SX2010 B
+                ON UPPER(RTRIM(A.REFERENCED_NAME)) = UPPER(RTRIM(B.X2_ARQUIVO))
+            LEFT JOIN SX3010 C
+                ON UPPER(RTRIM(B.X2_CHAVE)) = UPPER(RTRIM(C.X3_ARQUIVO))
+            WHERE A.NAME = '${viewName}'
+              AND A.TYPE = 'VIEW'`
+    }
+  });
+
+  const dependencias = depsResponse.data.Retorno;
+
+  // 4) Retorno consolidado
+  return {
+    view: viewName,
+    schema,
+    ddl
+    //dependencias
+  };
 }

@@ -8,11 +8,13 @@ export const consultarView = async (req, res) => {
   try {
     const dadosView = await buscarViewTotvs(relatorio);
 
+    const dadosViewJSON = JSON.stringify(dadosView, null, 2);
+
     if (!dadosView) {
       return res.status(404).json({ error: 'View não encontrada' });
     }
 
-    const docAI = await gerarDocumentacao(dadosView, duvida);
+    const docAI = await gerarDocumentacao(dadosViewJSON, duvida);
 
     res.json({ documentacao: docAI });
   } catch (error) {

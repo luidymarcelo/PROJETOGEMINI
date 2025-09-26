@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" type="imagex/png" href="images/Icon.jpg">
     <title>Gerador de Documentação de Views</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <img src="images/Windows_XP_SP2_Boot_screen-removebg-preview.png" alt="Logo Itacorda" style="max-width:500px; margin-bottom:1rem;">
+            <img src="images/Itacorda.png" alt="Logo Itacorda" style="max-width:250px; margin-bottom:1rem;">
             <h1>Gerador de Documentação de Views</h1>
             <p>Insira o nome da view e sua dúvida para obter uma resposta detalhada da IA.</p>
         </header>
 
         <div class="search-container">
-            <input type="text" id="relatorio" placeholder="Nome da View: Ex: V_BI_COMPRAS" />
-            <textarea id="duvida" placeholder="Digite sua dúvida sobre a view aqui... (opcional)"></textarea>
+            <input type="text" id="relatorio" placeholder="Digite o número do relatório" />
+            <textarea id="duvida" placeholder="Digite sua dúvida sobre o relatório aqui... (opcional)"></textarea>
             <button onclick="consultarRelatorio()">Gerar Documentação</button>
         </div>
 
